@@ -1,0 +1,57 @@
+
+
+
+
+
+/* READ THESE DOCS FOR CSS EXX W IOSLIDES BUILT VIA RMD: */
+/*  https://github.com/rstudio/rmarkdown/blob/master/inst/rmd/ioslides/ioslides-13.5.1/theme/css/default.css */
+/*  https://rmarkdown.rstudio.com/ioslides_presentation_format.html */
+  
+
+/* vertical-align: center !important; */
+.title-slide hgroup h1 {
+  font-size: 48px;
+  
+}
+
+h2 {
+  font-size: 36px;
+}
+
+
+h2.auto-fadein {
+  text-align: center !important;
+  margin: auto !important;
+}
+
+
+/* ugh this grabs both the transition titles *and* the title slide subtit :/ */
+.segue h2 {
+  /* color: red !important; */  
+  font-size: 48px;
+}
+
+
+/* this seems to do nothinke </3 */
+h2.auto-fadein {
+  text-align: center !important;
+  margin: auto !important;
+}
+
+
+
+.gdbar img {
+  width: 222px !important;
+  height: 54.5px !important;
+  margin: 28px 28px;
+}
+
+.gdbar {
+  margin-top: -50px !important;
+  width: 250px !important;
+  height: 75px !important;
+}
+
+body > slides > slide.title-slide.segue.nobackground.current > aside {
+  padding-left: 12px !important;
+}
