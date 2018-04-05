@@ -1,6 +1,7 @@
 ## introduction to natural language processing 
-### timothy leffel, [`http://lefft.xyz`](http://lefft.xyz)
-###### materials for march/2018 monthly DS meeting 
+#### materials for march/2018 monthly DS meeting 
+###### timothy leffel, [`http://lefft.xyz`](http://lefft.xyz)
+
 
 
 clone the repo to follow along -- you'll need:
