@@ -57,6 +57,7 @@ knitr::include_graphics("xkcd_114.png")
 ```
 
 
+
 ## what is natural language processing? (a linguist's take)
 
 two branches of **computational linguistics**:
@@ -64,8 +65,13 @@ two branches of **computational linguistics**:
 - symbolic computational linguistics: using computers to construct and evaluate **discrete** models of language structure and meaning -- the goal is to **understand** and **represent** human language 
 - statistical computational linguistics: using computers to **learn** what actual language use is like by exposing them to **statistical regularities** that are present in **large, naturally-occurring corpora** 
 
+
+## what is natural language processing? (a linguist's take)
+
 > I think of Natural Language Processing as basically synonymous with "statistical computational linguistics"
- 
+
+> NLP is less of a unified field with an established *theoretical* tradition than it is an amalgamation of approaches to tasks that are derived from theoretical constructs from computer science, linguistics, and information theory. 
+
 
 
 ## what is natural language processing?
@@ -83,14 +89,6 @@ We'll focus on text-based NLU today
 ## what is natural language processing?
 
 easier to define NLP in terms of *tasks* and *objectives* than an abstract characterization 
-
-there are usually at least the following broad phases in an NLP project life cycle:
-
-1. data acquisition: define and obtain or construct your corpus 
-2. preprocessing: regularize text; remove stop words and other junk; transform corpus into a format you can compute on; calculate some summary statistics do be used downstream (e.g. number of unique words, total word count)
-3. model development: define your objective; select an algorithm that will generate predictions you can use to measure how well you are fulfilling your objective; set aside a subset of your data ($\approx$20-30%) for evaluation
-4. model evaluation + selection: define a success metric (e.g. accuracy relative to human labels or some benchmark dataset)
-5. model "deployment:" use your model to generate predictions on unseen text. 
 
 
 ## NLP tasks (preprocessing)
@@ -165,7 +163,7 @@ NLP tasks can be divided into **supervised** tasks and **unsupervised** tasks
 
 ## caveat 
 
-- most NLP tasks are *extremely computationally expensive* (we'll see examples later)
+- most NLP tasks are *very computationally expensive* (we'll see examples later)
 - high-level languages like Python and R are great for exploring data and deploying small- to medium-scale models
 - but when speed is crucial (e.g. question-answering), models are usually implemented in lower-level languages like Java or C++ (e.g. `word2vec` is implemented in C++; `GloVe` is implemented in Java)
 
@@ -175,62 +173,54 @@ Today we'll just look at modern tooling for Python and R
 
 - as of 2018, the NLP ecosystem is much more mature in Python than in R
 - R's memory management system makes it less than ideal for large-scale text analysis endeavors
-- **BUT** recent NLP packages for R are `Rcpp::`-based extensions, and thus can overcome some of R's limitations (especially if you are using a high-performance machine with tons of RAM) 
+- **BUT** recent NLP packages for R are `Rcpp::`-based extensions, and thus can overcome some of R's limitations (especially if you are using a high-performance machine or parallel processing) 
+
+## Workflow 
 
 My workflow is usually the following:
 
-- use R to get a feel for the data (visualization, summary statistics) 
-- use Python to implement the model and apply it to the corpus (writing predictions to a file)
+- use R to get a feel for a subset of the data (visualization, summary statistics) 
+- use Python to develop + select a model 
+- use Python to apply selected model to corpus (writing predictions to a file)
 - use R to evaluate model performance, visualize, and report results (`.Rmd`/`ggplot2::`)
 
-**NOTE**: if you haven't yet, check out R Studio's new `reticulate::` package!
+**NOTE**: if you haven't yet, check out R Studio's new `reticulate::` package -- makes it easy to integrate Python and R in a single workflow
 
 
 
-## Python NLP tools 
+## Python NLP tools (see also [PyPI index](https://pypi.python.org/pypi?%3Aaction=search&term=natural+language+processing&submit=search))
 
 #### NLTK
-- tried and true
-- contains lots of corpora and datasets
+- tried and true -- contains lots of corpora and datasets
 - implements symbolic and statistical models (unique in this respect)
-- not necessarily optimized for modern workflows
 
 #### gensim
 - implements bleeding edge models
-- fast and efficient 
+- fast and efficient -- best for large-scale models
 
 #### spacy
 - nice API, easy to use, fast
-- out of the box, *stuff just works*
-- not super flexible
+- out of the box, *stuff just works* -- but not always super flexible
 
 #### sklearn
-- there are a few `sklearn` models designed for text
-- they use the familiar `sklearn` API
-- a good starting point
-- excellent for preprocessing
-- EXAMPLES
+- there are a few `sklearn` models designed for text -- all use the familiar `sklearn` API
+- a good starting point, and excellent for preprocessing
 
+## R NLP tools (see also [CRAN NLP Task View](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html))
 
-## R NLP tools 
+#### text2vec (still in beta!) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [[homepage](http://text2vec.org/)] [[CRAN](https://cran.r-project.org/web/packages/text2vec/index.html)]
+- my favorite R package for NLP: fast and clean and lightweight
+- main goal is to provide an interface for training term embeddings (implements `GloVe` and `word2vec` in `RCpp::`) -- but also provides nice `R6::` classes for key data structures like DTM's and TCM's
 
-#### text2vec (still in beta!)
-- my favorite R package for NLP: fast and clean and not bloated
-- implements `GloVe` and `word2vec` in R/C++ 
-- main goal is to provide an interface for training term embeddings
-- but also provides very nice `R6::` classes for important data structures like DTM's and TCM's
+#### quanteda &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [[homepage](https://docs.quanteda.io/)] [[CRAN](https://cran.r-project.org/web/packages/quanteda/index.html)]
+- a modern end-to-end framework for working with text data -- has a nice interface and seems like decent performance, but hasn't gained a lot of traction in the R community
 
-
-#### quanteda 
-- a modern end-to-end framework for working with text data
-- has a nice interface and seems like decent performance, but hasn't gained a lot of traction in the R community
-
-#### tidytext
-- an excellent package for learning NLP, especially when combined with `dplyr::` and [Robinson & Silge (2016)](INSERT-LINK)
+#### tidytext &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  [[intro vignette](https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html)] [[CRAN](https://cran.r-project.org/web/packages/tidytext/index.html)] 
+- excellent for learning, esp. when used with `dplyr::` and [Robinson & Silge (2016)](https://www.tidytextmining.com/)
 - slow and therefore not a good choice for production-grade models
 
 
-#### tm
+#### tm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  [[intro vignette](https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf)] [[CRAN](https://cran.r-project.org/web/packages/tm/index.html)]
 - an older framework -- I haven't used it much (anyone??)
 
 ```{r}
@@ -253,6 +243,18 @@ lefftpack::dataset_word_freq
 
 
 # demos, demos, demos! 
+
+## NLP project life cycle 
+
+there are usually at least the following broad phases in an NLP project life cycle:
+
+1. **data acquisition**: define and obtain or construct your corpus; set aside a subset of your data ($\approx$20-30%) for evaluation
+2. **preprocessing**: regularize text; remove stop words and other junk; transform corpus into a format you can compute on; calculate some summary statistics do be used downstream (e.g. number of unique words, total word count)
+3. **model development**: define your objective; select an algorithm that generates predictions you can use to measure accuracy relative to objective
+4. **model evaluation + selection**: define a success metric (e.g. accuracy relative to human labels or some benchmark dataset)
+5. **model "deployment"**: use model to generate predictions on unseen text. 
+
+
 
 ## the rest of today: 
 
@@ -332,6 +334,4 @@ table {
 
 
 
-
-nlp is less of a unified field with an established theoretical tradition than it is an amalgamation of approaches to tasks that are derived from theoretical constructs from computer science, linguistics, and information theory. 
 

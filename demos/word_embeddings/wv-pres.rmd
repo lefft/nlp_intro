@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 ```
 
 ```{r session_setup}
-lefftpack::lazy_setup(); library("ggrepel"); source("../util.r")
+lefftpack::lazy_setup(); library("ggrepel"); source("util.r")
 wd <- "~/BOOSH/_datasets/_word_embeddings/___prez/" # ; setwd(wd)
 
 data_path <- function(f) paste0(wd, "../_output/word2vec/", f)    # wrap path
