@@ -1,0 +1,87 @@
+---
+title: "Word Embeddings Demo"
+subtitle: "with a sample of pre-trained `word2vec` embeddings"
+author: "timothy leffel, apr04/2018"
+output: html_document
+---
+
+
+
+```{r setup, message=FALSE}
+knitr::opts_chunk$set(echo=TRUE, eval=TRUE)
+embeddings_sample <- "data/word2vec_words-as-cols_sample.csv"
+
+
+# you need all of these installed to run everything in this demo
+library(dplyr)
+library(reshape2)
+library(Rtsne)
+
+library(ggplot2)
+library(ggrepel)
+library(gridExtra)
+```
+
+
+### 0. Setup 
+```{r}
+# read word embeddings sample 
+dat <- as.matrix(read.csv(embeddings_sample, row.names=1))
+
+# load utility functions
+source("words_demo_util.r")
+
+# this enables us to refer to a word"s vector with a string ("key")
+wv <- wv_closure(columnwise_word_vectors_matrix=dat)
+```
+
+
+### 1. Calculating word similarity/distance 
+```{r}
+cos_sim(wv("tall"), wv("big"))
+cos_sim(wv("tall"), wv("short"))
+cos_sim(wv("tall"), wv("high"))
+cos_sim(wv("tall"), wv("apple"))
+cos_sim(wv("tall"), wv("decide"))
+```
+
+
+### 2. Find most similar words to a given word 
+```{r}
+closest_word("tall")
+closest_word("king")
+closest_word("happy")
+closest_word("dog")
+
+closest_word_vec(wv("cigarette"), exclude=c("cigarette"))
+```
+
+
+### 3. Deriving word analogies 
+```{r}
+guesses <- list(
+  queen_guess = wv("king") - wv("man") + wv("woman"),
+  king_guess = wv("queen") - wv("woman") + wv("man"))
+
+closest_word_vec(guesses$queen_guess, exclude=c("king","man","woman"))
+closest_word_vec(guesses$king_guess, exclude=c("queen","woman","man"))
+```
+
+
+
+### 4. Visualize embeddings in a heatmap
+```{r}
+mf_words <- c("king","queen","man","woman","boy","girl")
+vector_heatmap(dat, mf_words, interpolate=TRUE)
+```
+
+
+### 5. Visualize embeddings in lower-dimensional space
+
+```{r}
+tsne_vector_plot(dat, mf_words, 
+                 splitvar=c(rep(c("M","F"), times=length(mf_words)/2)), 
+                 perplexity="auto", seed=6933)
+```
+
+

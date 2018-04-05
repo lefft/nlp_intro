@@ -122,14 +122,16 @@
 
 <ul>
 <li>most of today will be live demos</li>
-<li>clone this repository to follow along: INSERT-LINK</li>
-<li>you&#39;ll need a recent version of R and the following packages (use <code>install.packages()</code>):
+<li>clone this repository to follow along: <a href='https://github.com/lefft/nlp_intro' title=''><code>https://github.com/lefft/nlp_intro</code></a></li>
+<li>to run the code on your own machine, you&#39;ll need:
 
 <ul>
-<li>blah</li>
-<li>blah</li>
+<li>Python 3.3+, with <code>sklearn</code>, <code>pandas</code>, <code>numpy</code></li>
+<li>R 3.4+, with <code>dplyr</code>, <code>reshape2</code>, <code>Rtsne</code>, <code>ggplot2</code>, <code>ggrepel</code>, <code>gridExtra</code></li>
 </ul></li>
 </ul>
+
+<p>(dependencies also listed in the repo readme)</p>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>outline</h2></hgroup><article  id="outline">
 
@@ -139,22 +141,19 @@
 <li>overview of NLP (10-15min)
 
 <ul>
-<li>what is natural language processing?</li>
-<li>common tasks, algorithms, and models</li>
-<li>modern tools</li>
+<li>what is natural language processing? (a bit of navel gazing)</li>
+<li>common tasks and workflows</li>
 </ul></li>
-<li>NLP at NORC (5min)
+<li>modern tooling for NLP (5min)
 
 <ul>
-<li>HMC</li>
-<li>what else?</li>
+<li>languages and packages</li>
 </ul></li>
 <li>live demos (40min)
 
 <ul>
-<li>data structures and n-grams</li>
-<li>sentiment analysis</li>
-<li>word-embeddings</li>
+<li>document classification (Python)</li>
+<li>word embeddings (R)</li>
 </ul></li>
 </ol>
 
@@ -192,8 +191,8 @@
 <p>high-level distinction between <strong>NLU</strong> and <strong>NLG</strong></p>
 
 <ul>
-<li><strong>Natural language understanding (NLU)</strong>: INSERT-DEFN</li>
-<li><strong>Natural language generation (NLG)</strong>: INSERT-DEFN</li>
+<li><strong>Natural language understanding (NLU)</strong></li>
+<li><strong>Natural language generation (NLG)</strong></li>
 </ul>
 
 <p>Usually when people talk about &quot;natural language processing&quot; they are talking about NLU. And more specifically, NLU <strong>on text data</strong> (i.e. not audio)</p>
@@ -204,54 +203,41 @@
 
 <p>easier to define NLP in terms of <em>tasks</em> and <em>objectives</em> than an abstract characterization</p>
 
-</article></slide><slide class=""><hgroup><h2>NLP tasks (preprocessing)</h2></hgroup><article  id="nlp-tasks-preprocessing">
-
-<p>important text-based NLU <strong>preprocessing</strong> tasks:</p>
+<p>some common tasks:</p>
 
 <ul>
-<li>tokenization (break up a corpus into words, phrases, sentences, etc.)</li>
-<li>lemmatization/stemming (reduce morphological variants to a common form, e.g. <em>running</em>/<em>ran</em>/<em>runs</em> \(\Longrightarrow\) <em>run</em>)</li>
-<li>part-of-speech tagging (associate each token with a category like &quot;noun&quot;, &quot;verb&quot;, &quot;preposition&quot;, etc.)</li>
-<li>parsing (turn raw text into a representation that approximates each sentence&#39;s internal structure)</li>
+<li>document classification (&quot;is this about a person or a place?&quot;)</li>
+<li>sentiment analysis (&quot;is this text positive or negative?&quot;)</li>
+<li>topic modeling (&quot;what are the topics in this set of documents?&quot;)</li>
+<li>named entity recognition (&quot;who/what/where is this text talking about?&quot;)</li>
+<li>dependency parsing (&quot;what is the structure of the sentences in this text?&quot;)</li>
+<li>and many many more&#8230;</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>NLP tasks (modeling)</h2></hgroup><article  id="nlp-tasks-modeling">
-
-<p>some common tasks, which can be approached with supervised or unsupervised methods:</p>
-
-<p>better list: - doc clf - sent anal - named ent rec - depend pars</p>
+</article></slide><slide class=""><hgroup><h2>what is natural language processing?</h2></hgroup><article  id="what-is-natural-language-processing-3">
 
 <p>hi-level tasks are broken down into discrete subtasks, e.g.</p>
 
-<p>dependency parsing: - tokenization - lemmatization/stemming - pos tagging - build parse trees</p>
+<p>dependency parsing:</p>
 
 <ul>
-<li>document classification (e.g. spam filtering, topic detection)</li>
-<li>information retrieval (e.g. google&#39;s page rank)</li>
-<li>machine translation (e.g. google translate)</li>
-<li>document clustering (e.g. LDA-based topic models)</li>
-<li>sentiment analysis (e.g. dictionary-based models)</li>
+<li>tokenization</li>
+<li>lemmatization/stemming</li>
+<li>POS tagging</li>
+<li>build parse trees</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>NLP tasks (supervised/unsupervised)</h2></hgroup><article  id="nlp-tasks-supervisedunsupervised">
+<!-- ## NLP tasks (preprocessing) -->
 
-<p>NLP tasks can be divided into <strong>supervised</strong> tasks and <strong>unsupervised</strong> tasks</p>
+<!-- important text-based NLU **preprocessing** tasks: -->
 
-<h3>supervised tasks&#8230;</h3>
+<!-- - tokenization (break up a corpus into words, phrases, sentences, etc.) -->
 
-<ul>
-<li>usually start with some human-labeled training data (e.g. &quot;related to tobacco/smoking&quot;/&quot;not related to tobacco/smoking&quot;) &#8211; setting aside ~25% for model evaluation</li>
-<li>define some &#8230;</li>
-<li>FINISH THIS</li>
-</ul>
+<!-- - lemmatization/stemming (reduce morphological variants to a common form, e.g. *running*/*ran*/*runs* $\Longrightarrow$ *run*) -->
 
-<h3>unsupervised tasks&#8230;</h3>
+<!-- - part-of-speech tagging (associate each token with a category like "noun", "verb", "preposition", etc.) -->
 
-<ul>
-<li>categorize or score bodies of text w/o human-labeled examples</li>
-<li>often a given objective can be approached with supervised or unsupervised methods (e.g. sentiment analysis)</li>
-<li>FINISH THIS</li>
-</ul>
+<!-- - parsing (turn raw text into a representation that approximates each sentence's internal structure) -->
 
 </article></slide><slide class=""><hgroup><h2>NLP tasks (general strategy/workflow)</h2></hgroup><article  id="nlp-tasks-general-strategyworkflow">
 
@@ -262,9 +248,9 @@
 
 <ul>
 <li>do some preprocessing on the corpus (e.g. lowecasing, lemmatization);</li>
-<li>transform the corpus into a numerical matrix of some kind (e.g. DTM, TCM);</li>
+<li>transform corpus into a numerical matrix (e.g. DTM, TCM);</li>
 <li>do a bunch of linear algebra over that matrix until you can either make the predictions you need to make, or view a visualization of the clustering you need to understand; and</li>
-<li>evaluate your model&#39;s predictions on the test/holdout set against the human labels</li>
+<li>evaluate model predictions on the test/holdout set against human judgments</li>
 </ul></li>
 </ul>
 
@@ -327,8 +313,8 @@
 <h4>sklearn</h4>
 
 <ul>
-<li>there are a few <code>sklearn</code> models designed for text &#8211; all use the familiar <code>sklearn</code> API</li>
-<li>a good starting point, and excellent for preprocessing</li>
+<li>there are <code>sklearn</code> models designed for text &#8211; all use the <code>sklearn</code> API</li>
+<li>good starting point, and excellent for preprocessing</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>R NLP tools (see also <a href='https://cran.r-project.org/web/views/NaturalLanguageProcessing.html' title=''>CRAN NLP Task View</a>)</h2></hgroup><article  id="r-nlp-tools-see-also-cran-nlp-task-view">
@@ -349,7 +335,7 @@
 <h4>tidytext       [<a href='https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html' title=''>intro vignette</a>] [<a href='https://cran.r-project.org/web/packages/tidytext/index.html' title=''>CRAN</a>]</h4>
 
 <ul>
-<li>excellent for learning, esp. when used with <code>dplyr::</code> and <a href='https://www.tidytextmining.com/' title=''>Robinson &amp; Silge (2016)</a></li>
+<li>excellent for learning, esp. with <code>dplyr::</code> and <a href='https://www.tidytextmining.com/' title=''>Robinson &amp; Silge (2016)</a></li>
 <li>slow and therefore not a good choice for production-grade models</li>
 </ul>
 
@@ -374,22 +360,7 @@
 ## 10    10 it    p              3872477      0.960
 ## # ... with 4,990 more rows</pre>
 
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>NLP at NORC</h2></hgroup><article  id="nlp-at-norc">
-
-</article></slide><slide class=""><hgroup><h2>NLP at NORC</h2></hgroup><article  id="nlp-at-norc-1">
-
-<ul>
-<li>almost all HMC projects involve at least one NLP task
-
-<ul>
-<li>&quot;theme&quot; identification is a document classification problem;</li>
-<li>sentiment analysis</li>
-<li>&#8230;</li>
-</ul></li>
-<li>I&#39;m not aware of any other current projects that use text analysis &#8211; anyone know of any?!</li>
-</ul>
-
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>demos, demos, demos!</h2></hgroup><article  id="demos-demos-demos">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>3. demos, demos, demos!</h2></hgroup><article  id="demos-demos-demos">
 
 </article></slide><slide class=""><hgroup><h2>NLP project life cycle</h2></hgroup><article  id="nlp-project-life-cycle">
 
@@ -403,28 +374,9 @@
 <li><strong>model &quot;deployment&quot;</strong>: use model to generate predictions on unseen text.</li>
 </ol>
 
-</article></slide><slide class=""><hgroup><h2>the rest of today:</h2></hgroup><article  id="the-rest-of-today">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>demo 1: Naive Bayes spam filter</h2></hgroup><article  id="demo-1-naive-bayes-spam-filter">
 
-<ul>
-<li>demo 1: BLAH</li>
-<li>demo 2: BLAH</li>
-<li>demo 3: BLAH</li>
-</ul>
-
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>demo 1: spam filter</h2></hgroup><article  id="demo-1-spam-filter">
-
-</article></slide><slide class=""><hgroup><h2>demo 1: spam filter</h2></hgroup><article  id="demo-1-spam-filter-1">
-
-<ul>
-<li>use UCI spam dataset (5572 messages labeled as either ham or spam)</li>
-<li></li>
-</ul>
-
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>demo 2: data structures</h2></hgroup><article  id="demo-2-data-structures">
-
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>demo 3: word embeddings</h2></hgroup><article  id="demo-3-word-embeddings">
-
-</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>demo 2:</h2></hgroup><article  id="demo-2">
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>demo 2: fun with <code>word2vec</code></h2></hgroup><article  id="demo-2-fun-with-word2vec">
 
 <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Inconsolata"> <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Montserrat">
 
@@ -442,7 +394,6 @@ pre {
   padding: 4px;
 }
 code {
-  font-size: 12pt;
   font-family: 'Inconsolata', monospace !important;
 }
 table {

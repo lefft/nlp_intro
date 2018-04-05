@@ -21,10 +21,15 @@ knitr::opts_chunk$set(echo=FALSE, eval=TRUE)
 ## logistics
 
 - most of today will be live demos
-- clone this repository to follow along: INSERT-LINK
-- you'll need a recent version of R and the following packages (use `install.packages()`):
-    - blah
-    - blah
+- clone this repository to follow along: [`https://github.com/lefft/nlp_intro`](https://github.com/lefft/nlp_intro)
+- to run the code on your own machine, you'll need:
+    - Python 3.3+, with `sklearn`, `pandas`, `numpy`
+    - R 3.4+, with `dplyr`, `reshape2`, `Rtsne`, `ggplot2`, `ggrepel`, `gridExtra`
+
+
+(dependencies also listed in the repo readme)
+
+
 
 
 # outline 
@@ -32,16 +37,13 @@ knitr::opts_chunk$set(echo=FALSE, eval=TRUE)
 ## outline 
 
 1. overview of NLP (10-15min)
-    - what is natural language processing?
-    - common tasks, algorithms, and models
-    - modern tools
-2. NLP at NORC (5min)
-    - HMC
-    - what else? 
+    - what is natural language processing? (a bit of navel gazing)
+    - common tasks and workflows 
+2. modern tooling for NLP (5min)
+    - languages and packages
 3. live demos (40min)
-    - data structures and n-grams 
-    - sentiment analysis 
-    - word-embeddings 
+    - document classification (Python)
+    - word embeddings (R)
 
 
 # 1. overview of the field of NLP
@@ -78,8 +80,8 @@ two branches of **computational linguistics**:
 
 high-level distinction between **NLU** and **NLG**
 
-- **Natural language understanding (NLU)**: INSERT-DEFN
-- **Natural language generation (NLG)**: INSERT-DEFN
+- **Natural language understanding (NLU)**
+- **Natural language generation (NLG)**
 
 Usually when people talk about "natural language processing" they are talking about NLU. And more specifically, NLU **on text data** (i.e. not audio)
 
@@ -91,59 +93,39 @@ We'll focus on text-based NLU today
 easier to define NLP in terms of *tasks* and *objectives* than an abstract characterization 
 
 
-## NLP tasks (preprocessing)
+some common tasks:
 
-important text-based NLU **preprocessing** tasks:
+- document classification ("is this about a person or a place?")
+- sentiment analysis ("is this text positive or negative?")
+- topic modeling ("what are the topics in this set of documents?")
+- named entity recognition ("who/what/where is this text talking about?")
+- dependency parsing ("what is the structure of the sentences in this text?")
+- and many many more...
 
-- tokenization (break up a corpus into words, phrases, sentences, etc.)
-- lemmatization/stemming (reduce morphological variants to a common form, e.g. *running*/*ran*/*runs* $\Longrightarrow$ *run*)
-- part-of-speech tagging (associate each token with a category like "noun", "verb", "preposition", etc.)
-- parsing (turn raw text into a representation that approximates each sentence's internal structure)
 
-
-## NLP tasks (modeling)
-
-some common tasks, which can be approached with supervised or unsupervised methods:
-
-better list:
-  - doc clf
-  - sent anal
-  - named ent rec
-  - depend pars
+## what is natural language processing?
 
 hi-level tasks are broken down into discrete subtasks, e.g.
 
 dependency parsing:
-  - tokenization
-  - lemmatization/stemming
-  - pos tagging
-  - build parse trees
+
+- tokenization
+- lemmatization/stemming
+- POS tagging
+- build parse trees
 
 
 
-- document classification (e.g. spam filtering, topic detection)
-- information retrieval (e.g. google's page rank)
-- machine translation (e.g. google translate)
-- document clustering (e.g. LDA-based topic models)
-- sentiment analysis (e.g. dictionary-based models)
 
+<!-- ## NLP tasks (preprocessing) -->
 
-## NLP tasks (supervised/unsupervised)
+<!-- important text-based NLU **preprocessing** tasks: -->
 
-NLP tasks can be divided into **supervised** tasks and **unsupervised** tasks
+<!-- - tokenization (break up a corpus into words, phrases, sentences, etc.) -->
+<!-- - lemmatization/stemming (reduce morphological variants to a common form, e.g. *running*/*ran*/*runs* $\Longrightarrow$ *run*) -->
+<!-- - part-of-speech tagging (associate each token with a category like "noun", "verb", "preposition", etc.) -->
+<!-- - parsing (turn raw text into a representation that approximates each sentence's internal structure) -->
 
-### supervised tasks...
-
-- usually start with some human-labeled training data (e.g. "related to tobacco/smoking"/"not related to tobacco/smoking") -- setting aside ~25% for model evaluation 
-- define some ... 
-- FINISH THIS 
-
-
-### unsupervised tasks...
-
-- categorize or score bodies of text w/o human-labeled examples
-- often a given objective can be approached with supervised or unsupervised methods (e.g. sentiment analysis)
-- FINISH THIS 
 
 
 ## NLP tasks (general strategy/workflow)
@@ -152,9 +134,9 @@ NLP tasks can be divided into **supervised** tasks and **unsupervised** tasks
 - a dataset is a set of documents, aka a **corpus**
 - the name of the game is usually: 
     - do some preprocessing on the corpus (e.g. lowecasing, lemmatization); 
-    - transform the corpus into a numerical matrix of some kind (e.g. DTM, TCM); 
+    - transform corpus into a numerical matrix (e.g. DTM, TCM); 
     - do a bunch of linear algebra over that matrix until you can either make the predictions you need to make, or view a visualization of the clustering you need to understand; and 
-    - evaluate your model's predictions on the test/holdout set against the human labels
+    - evaluate model predictions on the test/holdout set against human judgments
 
 
 
@@ -203,8 +185,8 @@ My workflow is usually the following:
 - out of the box, *stuff just works* -- but not always super flexible
 
 #### sklearn
-- there are a few `sklearn` models designed for text -- all use the familiar `sklearn` API
-- a good starting point, and excellent for preprocessing
+- there are `sklearn` models designed for text -- all use the  `sklearn` API
+- good starting point, and excellent for preprocessing
 
 ## R NLP tools (see also [CRAN NLP Task View](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html))
 
@@ -216,7 +198,7 @@ My workflow is usually the following:
 - a modern end-to-end framework for working with text data -- has a nice interface and seems like decent performance, but hasn't gained a lot of traction in the R community
 
 #### tidytext &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  [[intro vignette](https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html)] [[CRAN](https://cran.r-project.org/web/packages/tidytext/index.html)] 
-- excellent for learning, esp. when used with `dplyr::` and [Robinson & Silge (2016)](https://www.tidytextmining.com/)
+- excellent for learning, esp. with `dplyr::` and [Robinson & Silge (2016)](https://www.tidytextmining.com/)
 - slow and therefore not a good choice for production-grade models
 
 
@@ -228,21 +210,9 @@ lefftpack::dataset_word_freq
 ```
 
 
-# NLP at NORC 
-
-## NLP at NORC 
-
-- almost all HMC projects involve at least one NLP task
-    - "theme" identification is a document classification problem; 
-    - sentiment analysis
-    - ...
-
-- I'm not aware of any other current projects that use text analysis -- anyone know of any?!
 
 
-
-
-# demos, demos, demos! 
+# 3. demos, demos, demos! 
 
 ## NLP project life cycle 
 
@@ -256,35 +226,11 @@ there are usually at least the following broad phases in an NLP project life cyc
 
 
 
-## the rest of today: 
 
-- demo 1: BLAH
-- demo 2: BLAH
-- demo 3: BLAH
+# demo 1: Naive Bayes spam filter
 
+# demo 2: fun with `word2vec`
 
-
-
-# demo 1: spam filter
-
-## demo 1: spam filter 
-
-- use UCI spam dataset (5572 messages labeled as either ham or spam)
-- 
-
-
-
-# demo 2: data structures 
-
-
-# demo 3: word embeddings 
-
-
-
-
-
-
-# demo 2: 
 
 
 
@@ -304,7 +250,6 @@ pre {
   padding: 4px;
 }
 code {
-  font-size: 12pt;
   font-family: 'Inconsolata', monospace !important;
 }
 table {
