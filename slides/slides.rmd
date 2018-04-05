@@ -20,6 +20,7 @@ knitr::opts_chunk$set(echo=FALSE, eval=TRUE)
 
 ## logistics
 
+- you can find the slides here: [`http://lefft.xyz/]
 - most of today will be live demos
 - clone this repository to follow along: [`https://github.com/lefft/nlp_intro`](https://github.com/lefft/nlp_intro)
 - to run the code on your own machine, you'll need:
