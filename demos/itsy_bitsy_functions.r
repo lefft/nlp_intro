@@ -47,21 +47,3 @@ trigrams_to_contexts <- function(trigrams){
   return(contexts)
 }
 
-
-
-# 
-# 
-# # NO NEED(?)
-# 
-# # get the contexts 
-# get_contexts <- function(tokens, window_size=3){
-#   contexts <- vector("list", length=length(tokens)-window_size-1)
-#   for (x in 1:(length(tokens)-window_size-1)){
-#     l_idx <- x
-#     r_idx <- window_size + l_idx - 1
-#     window <- tokens[l_idx:r_idx]
-#     window[median(seq_along(window))] <- ""
-#     contexts[[x]] <- window
-#   }
-#   return(contexts)
-# }

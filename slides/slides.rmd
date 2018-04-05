@@ -84,11 +84,13 @@ We'll focus on text-based NLU today
 
 easier to define NLP in terms of *tasks* and *objectives* than an abstract characterization 
 
-there are usually at least three phases in an NLP workflow:
+there are usually at least the following broad phases in an NLP project life cycle:
 
-1. preprocessing
-2. model development
-3. model evaluation 
+1. data acquisition: define and obtain or construct your corpus 
+2. preprocessing: regularize text; remove stop words and other junk; transform corpus into a format you can compute on; calculate some summary statistics do be used downstream (e.g. number of unique words, total word count)
+3. model development: define your objective; select an algorithm that will generate predictions you can use to measure how well you are fulfilling your objective; set aside a subset of your data ($\approx$20-30%) for evaluation
+4. model evaluation + selection: define a success metric (e.g. accuracy relative to human labels or some benchmark dataset)
+5. model "deployment:" use your model to generate predictions on unseen text. 
 
 
 ## NLP tasks (preprocessing)
@@ -104,6 +106,22 @@ important text-based NLU **preprocessing** tasks:
 ## NLP tasks (modeling)
 
 some common tasks, which can be approached with supervised or unsupervised methods:
+
+better list:
+  - doc clf
+  - sent anal
+  - named ent rec
+  - depend pars
+
+hi-level tasks are broken down into discrete subtasks, e.g.
+
+dependency parsing:
+  - tokenization
+  - lemmatization/stemming
+  - pos tagging
+  - build parse trees
+
+
 
 - document classification (e.g. spam filtering, topic detection)
 - information retrieval (e.g. google's page rank)
@@ -245,7 +263,104 @@ lefftpack::dataset_word_freq
 
 
 
+# demo 1: spam filter
 
+## demo 1: spam filter 
+
+- use UCI spam dataset (5572 messages labeled as either ham or spam)
+- 
+
+```{python}
+import random
+import pandas as pd
+
+from sklearn import metrics
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.feature_extraction.text import CountVectorizer
+
+
+### read in data and reorganize a bit 
+spam_data = '../sample_datasets/spam_clf/uci_ml_spam.txt'
+dat = pd.read_csv(spam_data, names=['ham_spam', 'text'], sep='\t')
+
+dat['label'] = dat.ham_spam == 'spam'
+dat = dat[['ham_spam', 'label', 'text']]
+
+
+# inspect the dataset 
+# print(dat.head(5))
+# print(dat.shape)
+# dat.ham_spam.value_counts() # / sum(dat.ham_spam.value_counts())
+
+
+### test-train split 
+train_idx = random.sample(range(len(dat)), int(len(dat)*.75))
+test_idx = [n for n in set(range(len(dat))) - set(train_idx)]
+
+train_text = list(dat.text.iloc[train_idx])
+train_labs = list(dat.label.iloc[train_idx])
+
+test_text = list(dat.text.iloc[test_idx])
+test_labs = list(dat.label.iloc[test_idx])
+
+
+### preprocess text (cast to a count-based document-term matrix)
+vectorizer = CountVectorizer(lowercase=True, ngram_range=(1,1), 
+                             stop_words='english')
+train_dtm = vectorizer.fit_transform(train_text)
+
+# check out the transformed data 
+# vectorizer.get_feature_names()[999:1011]
+# list(vectorizer.get_stop_words())[0:10]
+# vectorizer.get_params()
+# pd.DataFrame(train_dtm.A, columns=vectorizer.get_feature_names()).to_string())
+
+
+# model training 
+clf = MultinomialNB()
+clf.fit(train_dtm, train_labs)
+
+# model evaluation 
+test_dtm = vectorizer.transform(test_text)
+
+predictions = clf.predict(test_dtm)
+
+accuracy = metrics.accuracy_score(test_labs, predictions)
+print(f'out of the box accuracy: {round(accuracy,3)}')
+
+evaluation_df = pd.DataFrame([*zip(test_labs, predictions, test_text)], 
+                             columns=('label', 'prediction', 'text'))
+
+# look at the bad predictions 
+print(evaluation_df[evaluation_df.label != evaluation_df.prediction])
+
+# can also add `margins=True` 
+conf_mat = pd.crosstab(evaluation_df.label, evaluation_df.prediction, 
+                       rownames=['observed'], colnames=['predicted'])
+
+print(conf_mat)
+
+# if you want to see column-normalized cells 
+# print(round(conf_mat / conf_mat.sum(axis=0), 3))
+
+
+
+
+```
+
+
+
+# demo 2: data structures 
+
+
+# demo 3: word embeddings 
+
+
+
+
+
+
+# demo 2: 
 
 
 
@@ -290,4 +405,11 @@ table {
 
 </style>
 
+
+
+
+
+
+
+nlp is less of a unified field with an established theoretical tradition than it is an amalgamation of approaches to tasks that are derived from theoretical constructs from computer science, linguistics, and information theory. 
 
