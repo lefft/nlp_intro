@@ -1,5 +1,8 @@
-* linguist-vendored
-*.py linguist-vendored=false
-*.ipynb linguist-vendored=false
-*.r linguist-vendored=false
-*.rmd linguist-vendored=false
+# * linguist-vendored
+# *.py linguist-vendored=false
+# *.ipynb linguist-vendored=false
+# *.r linguist-vendored=false
+# *.rmd linguist-vendored=false
+
+slides/* linguist-vendored
+demos/word_embeddings/words_demo.html linguist-vendored
