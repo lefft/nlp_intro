@@ -1,3 +1,2 @@
-slides/* linguist-vendored
+slides/slides.html linguist-vendored
 demos/word_embeddings/words_demo.html linguist-vendored
-demos/word_embeddings/data/* linguist-vendored
