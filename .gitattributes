@@ -1,2 +1,1 @@
-slides/* linguist-vendored
-demos/word_embeddings/words_demo.html linguist-detectable=false
+**/*.html linguist-vendored
